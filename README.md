@@ -91,7 +91,8 @@ block offsets untouched, so the 512 rule cannot be violated.
 
 ## Verification
 
-See `../测试记录.md`. Summary on real firmware:
+Full logs (synthetic tests and three real images): [VERIFICATION.md](VERIFICATION.md).
+Summary on real firmware:
 
 | image | blocks | our decoder vs fwtool | our encoder | alignment | round-trip | fwtool.py decodes ours |
 |---|---|---|---|---|---|---|
@@ -102,6 +103,13 @@ See `../测试记录.md`. Summary on real firmware:
 `tools/verify_against_sony.py` re-runs all of it, including the cross-check with
 fwtool.py's independent decoder. `tests/test_lzpt.py` covers synthetic data
 (zeros, text, random, repetitive, multi-block) with no Sony files needed.
+
+## Appendix: the debug serial port
+
+[SERIAL.md](SERIAL.md) records what was measured on the camera's MULTI terminal during the same
+investigation: which contact carries the 115200 8N1 console, which are GND, and — just as
+importantly — which ones were never identified. Short version: one contact is verified, the rest
+is a voltage table, not an identification.
 
 ## Warning
 
