@@ -52,6 +52,24 @@ Two consequences worth knowing:
 * Sony's own images satisfy it everywhere: 418/418 blocks in the ILCE-7RM2
   `nflasha3`, 99/99 in the ILCE-6300 `nflasha7`.
 
+## The second invariant, and the same rule in WBI images
+
+[INVARIANTS.md](INVARIANTS.md) collects both rules in one place:
+
+* **Keep the block table and the total size identical to the stock image.**
+  Nothing enforces this, but it is what makes an interrupted write survivable:
+  with an unchanged table, every byte on flash during the write belongs to a valid
+  container (each block is either the old or the new data, and the table itself is
+  byte-identical) - the property `lzpt_inplace.py` is built around.
+* **WBI images (`nflasha5`, magic `WBI1`) follow the same 512 idea**, with the twist
+  that their sections are concatenated with no padding, so one odd size shifts every
+  later section off the grid. Measured on ILCE-7RM2 (1531 sections) and ILCE-6300
+  (1635 sections): zero unaligned, and both sum checks hold exactly
+  (`sum(size) == dataSize`, `sum(osize) == oDataSize`).
+
+It also lists what is *not* an invariant, so nobody asserts something the stock
+images themselves violate - notably, the last block's `offset + size` is larger
+than the file size in Sony's own containers.
 ## Usage
 
 ```console
